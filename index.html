@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinSt0r3</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.5s ease;
+    }
+
+    #searchBox {
+      width: 90%;
+      max-width: 800px;
+      height: 7vh;
+      background-color: #f0f0f0;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-weight: bold;
+      user-select: none;
+    }
+
+    #searchText {
+      color: #333;
+      font-size: 1.2em;
+      margin-right: 20px;
+    }
+
+    #searchInput {
+      flex: 1;
+      height: 60%;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      color: #333;
+      transition: background-color 0.3s ease;
+    }
+
+    #searchInput:focus {
+      background-color: white;
+    }
+
+    #appStoreBox {
+      width: 90%;
+      max-width: 800px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      color: #333;
+      overflow-y: auto;
+    }
+
+    .appContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .contentContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .appName {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .installButton {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .installButton:hover {
+      background-color: #0056b3;
+    }
+
+    .screenshotsContainer {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #007bff #f0f0f0;
+      margin-top: 20px;
+      max-width: 100%;
+    }
+
+    .screenshotsContainer::-webkit-scrollbar {
+      width: 12px;
+      height: 10px;
+    }
+
+    .screenshotsContainer::-webkit-scrollbar-thumb {
+      background-color: #007bff;
+    }
+
+    .screenshot {
+      margin: 10px;
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, border-radius 0.3s ease; 
+      cursor: pointer;
+    }
+
+    .screenshot:hover {
+      transform: scale(1.05);
+      border-radius: 10px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+      margin: 20px 0;
+    }
+
+    #themeSwitch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    #themeSwitch:hover {
+      background-color: #0056b3;
+    }
+
+    .moon-icon::before {
+      content: "\1F319";
+    }
+
+    .sun-icon::before {
+      content: "\2600";
+    }
+
+    body.dark-mode {
+      background-color: #1c1c1c;
+      color: #ffffff;
+    }
+
+    #searchBox.dark-mode {
+      background-color: #333333;
+    }
+
+    #searchText.dark-mode {
+      color: #ffffff;
+    }
+
+    #searchInput.dark-mode {
+      background-color: #333333;
+      color: #ffffff;
+    }
+
+    #appStoreBox.dark-mode {
+      background-color: #333333;
+      color: #ffffff;
+    }
+
+    .appContainer.dark-mode {
+      background-color: #2c2c2c;
+    }
+
+    .appName.dark-mode {
+      color: #ffffff;
+    }
+
+    .installButton.dark-mode {
+      background-color: #2c2c2c;
+      color: #ffffff;
+    }
+
+    .screenshotsContainer.dark-mode {
+      background-color: #2c2c2c;
+    }
+
+    .screenshot.dark-mode {
+      border: 1px solid #ffffff;
+    }
+
+    #themeSwitch.dark-mode {
+      background-color: #2c2c2c;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <button id="themeSwitch" onclick="toggleTheme()">
+    <span id="themeIcon" class="moon-icon"></span>
+    Switch Theme
+  </button>
+
+  <div id="searchBox">
+    <span id="searchText">Type here...</span>
+    <input type="text" id="searchInput" placeholder="Search">
+  </div>
+
+  <div id="appStoreBox">
+  
+    <div id="appList"></div>
+  </div>
+
+  <script>
+    const appList = document.getElementById("appList");
+
+// Function to fetch app data from the API
+async function fetchAppData() {
+  try {
+    const response = await fetch("https://raw.githubusercontent.com/DauntingEmperor/winsource/main/source/apps.json");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching app data:", error);
+    return [];
+  }
+}
+
+// Function to render an app
+function renderApp(app) {
+  const appContainer = document.createElement("div");
+  appContainer.classList.add("appContainer");
+
+  const appName = document.createElement("div");
+  appName.classList.add("appName");
+  appName.textContent = app.appName;
+
+  const installButton = document.createElement("button");
+  installButton.classList.add("installButton");
+  installButton.textContent = "Install";
+  installButton.addEventListener("click", () => installApp(app.downloadLink));
+
+  const screenshotsContainer = document.createElement("div");
+  screenshotsContainer.classList.add("screenshotsContainer");
+
+  app.screenshots.forEach((screenshotUrl) => {
+    const screenshot = document.createElement("img");
+    screenshot.classList.add("screenshot");
+    screenshot.src = screenshotUrl;
+    screenshotsContainer.appendChild(screenshot);
+  });
+
+  appContainer.appendChild(appName);
+  appContainer.appendChild(installButton);
+  appContainer.appendChild(screenshotsContainer);
+
+  appList.appendChild(appContainer);
+}
+
+// Function to render all apps
+async function renderApps() {
+  const appData = await fetchAppData();
+  appData.forEach(renderApp);
+}
+
+// Function to install an app
+function installApp(downloadLink) {
+  // Add your installation logic here
+}
+
+// Call renderApps to render the apps initially
+renderApps();
+
+  </script>
+</body>
+</html>
